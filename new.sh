@@ -14,7 +14,7 @@ fi
 mkdir "$CONF_DIR"
 
 ssh-keygen -b 2048 -t rsa -f "$CONF_DIR"/id_rsa -q -N ""
-curl -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $DO_TOKEN" -d '{"name":"'"$name"'","public_key":"'"$(cat "$CONF_DIR"/id_rsa.pub)"'"}' https://api.digitalocean.com/v2/account/keys
+curl -s -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $DO_TOKEN" -d '{"name":"'"$name"'","public_key":"'"$(cat "$CONF_DIR"/id_rsa.pub)"'"}' https://api.digitalocean.com/v2/account/keys >/dev/null
 
 SSH_FINGERPRINT="$(ssh-keygen -l -E md5 -f "$CONF_DIR"/id_rsa.pub | awk '{print $2}' | sed 's#MD5:##')"
 
@@ -43,3 +43,9 @@ echo "	Hostname $IP" >> "$HOME"/.dodocker/ssh-config
 echo "	IdentityFile $CONF_DIR/id_rsa" >> "$HOME"/.dodocker/ssh-config
 echo "	User root" >> "$HOME"/.dodocker/ssh-config
 
+echo
+echo "To use:"
+echo "export DOCKER_HOST=ssh://dodocker-$name"
+echo
+echo "To SSH:"
+echo "ssh dodocker-$name"
