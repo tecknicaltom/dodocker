@@ -38,10 +38,14 @@ do
 	sleep 1
 done
 
-echo "Host dodocker-$name" >> "$HOME"/.dodocker/ssh-config
-echo "	Hostname $IP" >> "$HOME"/.dodocker/ssh-config
-echo "	IdentityFile $CONF_DIR/id_rsa" >> "$HOME"/.dodocker/ssh-config
-echo "	User root" >> "$HOME"/.dodocker/ssh-config
+
+cat <<EOF > "$CONF_DIR"/ssh-config
+Host dodocker-$name
+	Hostname $IP
+	IdentityFile $CONF_DIR/id_rsa
+	User root
+EOF
+
 
 echo
 echo "To use:"
