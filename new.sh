@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [[ $# -ne 2 ]]
+then
+	echo "Usage: $0 token_name machine_name"
+	exit
+fi
+
 token_name="$1"
 name="$2"
 DO_TOKEN="$(jq -r ."$token_name" "$HOME"/.dodocker/tokens.json)"
